@@ -8,8 +8,8 @@ class Board:
 	"""Used to organize and handle the gist of the game"""
 	def __init__(self, width, height):
 		self.score = 0
-		self.width = 640
-		self.height = 480
+		self.width = width
+		self.height = height
 		self._initEntities()
 	
 	def _initEntities(self):

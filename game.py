@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
 	pygame.init()
 	display = pygame.display.set_mode((screen_width, screen_height))
-	pygame.display.set_caption('Amazing Game')
+	pygame.display.set_caption('Squarez')
 	fpsClock = pygame.time.Clock()
 
 	board = Board(screen_width, screen_height)
