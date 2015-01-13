@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import pygame, random
-from pygame.locals import *
 
 from player import Player
 from food import Food
 
 class Board:
+	"""Used to organize and handle the gist of the game"""
 	def __init__(self, width, height):
 		self.score = 0
 		self.width = 640

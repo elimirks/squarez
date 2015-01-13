@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import pygame, math, sys, random
-from pygame.locals import *
+import pygame, random
 
 from entity import Entity
 from badguy import *
