@@ -37,6 +37,25 @@ class Player(Entity):
 	def _ensureWithinScreenBounds(self, board):
 		self.x = min(max(0, self.x), board.getWidth() - self.size)
 		self.y = min(max(0, self.y), board.getHeight() - self.size)
+	
+	def grow(self, amount):
+		self.size += amount
+		self.x -= amount/2
+		self.y -= amount/2
+	
+	def shrink(self, amount):
+		minimumSize = 5
+		if self.size > minimumSize:
+			self.size = max(minimumSize, self.size - amount)
+			self.x += amount/2
+			self.y += amount/2
+
+	def increaseSpeed(self, amount):
+		self.speed += amount
+	
+	def decreaseSpeed(self, amount):
+		minimumSpeed = 30
+		self.speed = max(self.speed - 10, minimumSpeed)
 
 	def die(self):
 		self.dead = True

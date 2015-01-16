@@ -97,6 +97,8 @@ class SmartBadguy(Badguy):
 	
 	def _step(self, board, elapsedTime):
 		player = board.player
+		if player.isDead():
+			return
 
 		deltaX = abs(player.x - self.x)
 		deltaY = abs(player.y - self.y)

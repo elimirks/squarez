@@ -8,6 +8,7 @@ class Food(Entity):
 	"""The class to handle getting points ( coins, food, etc :] )"""
 	def randomFood(board):
 		"""Factory method for creates a new random food type
+
 		If you create new types of food, add them to this list.
 		"""
 		return random.choice([
@@ -20,19 +21,20 @@ class Food(Entity):
 	def __init__(self, board):
 		self.size = 10
 		self.x, self.y = board.randomXYTuple(self.size)
-
-	def hitPlayer(self, board):
-		board.addScore(1)
-
+	
+	def _initNewBadguy(self, board):
 		score = board.getScore()
 
 		if score == 1:
-			badguy = SmartBadguy(board)
+			return SmartBadguy(board)
 		elif score % 10 == 0:
-			badguy = RandomBadguy(board)
+			return RandomBadguy(board)
 		else:
-			badguy = SimpleBadguy(board)
+			return SimpleBadguy(board)
 
+	def hitPlayer(self, board):
+		board.addScore(1)
+		badguy = self._initNewBadguy(board)
 		board.addBadguy(badguy)
 		board.shuffleFood(self)
 
@@ -43,11 +45,7 @@ class GrowFood(Food):
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
-		# No size limit :D
-		growBy = 2
-		board.player.size += growBy
-		board.player.x -= growBy/2
-		board.player.y -= growBy/2
+		board.player.grow(2)
 
 
 class ShrinkFood(Food):
@@ -56,12 +54,7 @@ class ShrinkFood(Food):
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
-		# Limit the minimum size of the player
-		if board.player.getSize() > 5:
-			shrinkBy = 2
-			board.player.size -= shrinkBy
-			board.player.x += shrinkBy/2
-			board.player.y += shrinkBy/2
+		board.player.shrink(2)
 
 
 class FastFood(Food):
@@ -70,7 +63,7 @@ class FastFood(Food):
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
-		board.player.speed += 10
+		board.player.increaseSpeed(10)
 
 
 class SlowFood(Food):
@@ -79,5 +72,5 @@ class SlowFood(Food):
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
-		board.player.speed = max(board.player.speed - 10, 10)
+		board.player.decreaseSpeed(10)
 
