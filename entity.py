@@ -8,8 +8,8 @@ class Entity:
 		self.y = y
 		self.size = size
 
-	def move(self, board, elapsedTime):
-		"""Used to move the entity based on the elapsedTime (in ms)"""
+	def move(self, board, elapsedTime : float):
+		"""Used to move the entity based on the elapsedTime (in seconds)"""
 		pass
 
 	def getRect(self):

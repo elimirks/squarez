@@ -5,6 +5,7 @@ from pygame.locals import *
 from entity import Entity
 
 class Player(Entity):
+	"""Responsible for the main character square."""
 	def __init__(self, board):
 		size = 15
 		x = board.getWidth()/2 - size/2
@@ -12,7 +13,7 @@ class Player(Entity):
 		Entity.__init__(self, x, y, size)
 		self.speed = 100
 		self.dead = False
-		
+
 	def draw(self, display):
 		pygame.draw.rect(display, pygame.Color(255, 255, 0), self.getRect())
 	

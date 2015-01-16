@@ -18,6 +18,10 @@ class Badguy(Entity):
 			self._step(board, elapsedTime)
 	
 	def draw(self, display):
+		"""Handles the spawn animation of the badguy, as well as stepping it.
+		
+		To control the movement of the badguy, use the _step method.
+		"""
 		if self.timeAlive < self.SPAWN_TIME:
 			size = (self.timeAlive / self.SPAWN_TIME) * self.size
 			deltaSize = self.size - size
@@ -36,12 +40,14 @@ class Badguy(Entity):
 
 
 class SimpleBadguy(Badguy):
+	"""Simple badguy that keeps a constant velocity"""
 	def __init__(self, board):
 		Badguy.__init__(self, 10, pygame.Color(255, 255, 255))
 		self.xVelocity = self._randomVelocity()
 		self.yVelocity = self._randomVelocity()
 
 	def _randomVelocity(self):
+		"""Random velocity as an integer - Between 10-50 pixels per second"""
 		return random.choice([-1, 1]) * random.randint(10, 50)
 	
 	def _bounceOffWalls(self, board, elapsedTime):
@@ -64,14 +70,21 @@ class RandomBadguy(SimpleBadguy):
 	def __init__(self, board):
 		SimpleBadguy.__init__(self, board)
 		self.color = pygame.Color(255, 127, 127)
+		self._lastDirectionChange = 0
 
-	def _randomizeVelocity(self):
-		if random.randint(0, 100) == 0:
-			self.xVelocity = self._randomVelocity()
-		if random.randint(0, 200) == 0:
-			self.yVelocity = self._randomVelocity()
+	def _randomizeVelocity(self, elapsedTime):
+		self._lastDirectionChange += elapsedTime
+
+		# Only change directions at most once per second.
+		if self._lastDirectionChange > 1:
+			self._lastDirectionChange = 0
+			chanceEachSecond = 3
+			if random.randint(0, chanceEachSecond) == 0:
+				self.xVelocity = self._randomVelocity()
+			if random.randint(0, chanceEachSecond) == 0:
+				self.yVelocity = self._randomVelocity()
 	
 	def _step(self, board, elapsedTime):
-		self._randomizeVelocity()
+		self._randomizeVelocity(elapsedTime)
 		SimpleBadguy._step(self, board, elapsedTime)
 

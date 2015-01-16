@@ -5,6 +5,7 @@ from entity import Entity
 from badguy import *
 
 class Food(Entity):
+	"""The class to handle getting points ( coins, food, etc :] )"""
 	def randomFood(board):
 		"""Factory method for creates a new random food type
 		If you create new types of food, add them to this list.
