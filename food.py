@@ -22,6 +22,12 @@ class Food(Entity):
 		self.size = 10
 		self.x, self.y = board.randomXYTuple(self.size)
 	
+	def draw(self, display):
+		radius = int(self.size / 2)
+		x = self.x + radius
+		y = self.y + radius
+		pygame.draw.circle(display, self.color, (x, y), radius)
+	
 	def _initNewBadguy(self, board):
 		score = board.getScore()
 
@@ -40,8 +46,9 @@ class Food(Entity):
 
 
 class GrowFood(Food):
-	def draw(self, display):
-		pygame.draw.rect(display, pygame.Color(0, 255, 0), self.getRect())
+	def __init__(self, board):
+		Food.__init__(self, board)
+		self.color = pygame.Color(0, 255, 0)
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
@@ -49,8 +56,9 @@ class GrowFood(Food):
 
 
 class ShrinkFood(Food):
-	def draw(self, display):
-		pygame.draw.rect(display, pygame.Color(0, 0, 255), self.getRect())
+	def __init__(self, board):
+		Food.__init__(self, board)
+		self.color = pygame.Color(0, 0, 255)
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
@@ -58,8 +66,9 @@ class ShrinkFood(Food):
 
 
 class FastFood(Food):
-	def draw(self, display):
-		pygame.draw.rect(display, pygame.Color(255, 0, 255), self.getRect())
+	def __init__(self, board):
+		Food.__init__(self, board)
+		self.color = pygame.Color(255, 0, 255)
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
@@ -67,8 +76,9 @@ class FastFood(Food):
 
 
 class SlowFood(Food):
-	def draw(self, display):
-		pygame.draw.rect(display, pygame.Color(255, 0, 0), self.getRect())
+	def __init__(self, board):
+		Food.__init__(self, board)
+		self.color = pygame.Color(255, 0, 0)
 
 	def hitPlayer(self, board):
 		Food.hitPlayer(self, board)
