@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-import pygame, random
+import pygame, random, math
 from pygame.locals import *
 
 from entity import Entity
 
 class Badguy(Entity):
 	"""Parent bad guy class. When the player hits this entity, it will die!"""
-	def __init__(self, size, color):
-		Entity.__init__(self, 0, 0, size)
+	def __init__(self, color):
+		Entity.__init__(self, 0, 0, size=10)
 		self.color = color
 		self.timeAlive = 0
 		self.SPAWN_TIME = 0.5
@@ -42,7 +42,7 @@ class Badguy(Entity):
 class SimpleBadguy(Badguy):
 	"""Simple badguy that keeps a constant velocity"""
 	def __init__(self, board):
-		Badguy.__init__(self, 10, pygame.Color(255, 255, 255))
+		Badguy.__init__(self, pygame.Color(255, 255, 255))
 		self.xVelocity = self._randomVelocity()
 		self.yVelocity = self._randomVelocity()
 
@@ -87,4 +87,33 @@ class RandomBadguy(SimpleBadguy):
 	def _step(self, board, elapsedTime):
 		self._randomizeVelocity(elapsedTime)
 		SimpleBadguy._step(self, board, elapsedTime)
+
+
+class SmartBadguy(Badguy):
+	"""A badguy that will chase the player"""
+	def __init__(self, board):
+		Badguy.__init__(self, pygame.Color(127, 255, 127))
+		self.speed = 30
+	
+	def _step(self, board, elapsedTime):
+		player = board.player
+
+		deltaX = abs(player.x - self.x)
+		deltaY = abs(player.y - self.y)
+		angle = math.atan(deltaY / deltaX)
+
+		# Determine the quadrant and adjust the angle relative to self
+		if player.y < self.y:
+			if player.x < self.x: # Second quadrant
+				angle = math.pi - angle
+			#else: First quadrant, so do nothing.
+		else:
+			if player.x < self.x: # Third quadrant
+				angle = math.pi + angle
+			else: # Fourth quadrant
+				angle = -angle
+
+		# The Y axis (unlike on a normal cartesian plane) is negative as it goes up.
+		self.y -= elapsedTime * self.speed * math.sin(angle)
+		self.x += elapsedTime * self.speed * math.cos(angle)
 

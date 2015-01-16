@@ -24,7 +24,11 @@ class Food(Entity):
 	def hitPlayer(self, board):
 		board.addScore(1)
 
-		if board.getScore() % 10 == 0:
+		score = board.getScore()
+
+		if score == 1:
+			badguy = SmartBadguy(board)
+		elif score % 10 == 0:
 			badguy = RandomBadguy(board)
 		else:
 			badguy = SimpleBadguy(board)
